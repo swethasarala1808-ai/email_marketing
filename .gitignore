@@ -1,0 +1,10 @@
+.env
+*.db
+__pycache__/
+*.pyc
+venv/
+.venv/
+whatsapp_session/
+linkedin_session/
+*.csv
+.DS_Store

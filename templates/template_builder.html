@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ 'Edit' if template else 'Create' }} Template</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; }
+    .navbar { background: linear-gradient(135deg, #1a1a2e, #0f3460); color: white; padding: 16px 30px; display: flex; align-items: center; gap: 14px; }
+    .navbar a { color: rgba(255,255,255,0.8); text-decoration: none; margin-left: auto; font-size: 14px; }
+    .container { max-width: 960px; margin: 30px auto; padding: 0 20px; }
+    .card { background: white; border-radius: 12px; padding: 28px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 20px; }
+    h2 { font-size: 18px; margin-bottom: 20px; color: #333; }
+    label { font-size: 13px; font-weight: 700; color: #555; display: block; margin-bottom: 5px; }
+    input, select, textarea { width: 100%; padding: 10px 12px; border: 1px solid #e0e0e0; border-radius: 7px; font-size: 14px; margin-bottom: 14px; }
+    textarea { font-family: 'Courier New', monospace; font-size: 13px; }
+    .btn { padding: 11px 24px; border: none; border-radius: 7px; cursor: pointer; font-size: 14px; font-weight: 700; }
+    .btn-primary { background: #4F46E5; color: white; }
+    .btn-secondary { background: #6c757d; color: white; margin-left: 10px; }
+    .hint { font-size: 12px; color: #888; margin: -10px 0 14px; }
+    .channel-hint { padding: 12px 16px; border-radius: 8px; font-size: 13px; margin-bottom: 14px; display: none; }
+    .hint-whatsapp { background: #dcfce7; color: #166534; border-left: 4px solid #25D366; }
+    .hint-linkedin { background: #dbeafe; color: #1e3a5f; border-left: 4px solid #0A66C2; }
+    .hint-email { background: #ede9fe; color: #3730a3; border-left: 4px solid #4F46E5; }
+    .starter-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .starter-btn { padding: 8px 16px; border-radius: 20px; border: 2px solid; cursor: pointer; font-size: 12px; font-weight: 700; background: white; }
+    .s-email { border-color: #4F46E5; color: #4F46E5; }
+    .s-whatsapp { border-color: #25D366; color: #15803d; }
+    .s-linkedin { border-color: #0A66C2; color: #0A66C2; }
+    .tab-bar { display: flex; border-bottom: 2px solid #eee; margin-bottom: 16px; }
+    .tab { padding: 9px 20px; cursor: pointer; font-weight: 600; color: #888; border-bottom: 3px solid transparent; margin-bottom: -2px; font-size: 13px; }
+    .tab.active { color: #4F46E5; border-bottom-color: #4F46E5; }
+  </style>
+</head>
+<body>
+<div class="navbar">
+  <span style="font-size:24px">📝</span>
+  <h1 style="font-size:18px">{{ 'Edit' if template else 'Create' }} Message Template</h1>
+  <a href="/">← Back to Dashboard</a>
+</div>
+
+<div class="container">
+  <div class="card">
+    <h2>{{ 'Edit' if template else 'New' }} Template</h2>
+
+    <div class="starter-btns">
+      <span>Load starter:</span>
+      <button class="starter-btn s-email" onclick="loadStarter('email')">📧 Email Template</button>
+      <button class="starter-btn s-whatsapp" onclick="loadStarter('whatsapp')">📱 WhatsApp Message</button>
+      <button class="starter-btn s-linkedin" onclick="loadStarter('linkedin')">💼 LinkedIn Message</button>
+    </div>
+
+    <form action="{{ '/edit_template/' + template.id|string if template else '/create_template' }}" method="POST">
+      <label>Template Name</label>
+      <input type="text" name="name" value="{{ template.name if template else '' }}" placeholder="e.g. startup_promo_email" required>
+
+      <label>Channel</label>
+      <select name="channel" id="channel_select" onchange="onChannelChange()" required>
+        <option value="email" {{ 'selected' if template and template.channel == 'email' else '' }}>📧 Email</option>
+        <option value="whatsapp" {{ 'selected' if template and template.channel == 'whatsapp' else '' }}>📱 WhatsApp</option>
+        <option value="linkedin" {{ 'selected' if template and template.channel == 'linkedin' else '' }}>💼 LinkedIn</option>
+      </select>
+
+      <div id="hint-email" class="channel-hint hint-email">
+        ✉️ Full HTML email. Use <code>{{company}}</code>, <code>{{name}}</code> for personalisation.
+      </div>
+      <div id="hint-whatsapp" class="channel-hint hint-whatsapp">
+        📱 Plain text only (no HTML). Keep it friendly and short (under 300 chars). Use <code>{{name}}</code>, <code>{{company}}</code>.
+      </div>
+      <div id="hint-linkedin" class="channel-hint hint-linkedin">
+        💼 Plain text only. Keep it professional and personal. Max 300 chars for connection notes. Use <code>{{name}}</code>, <code>{{company}}</code>.
+      </div>
+
+      <div id="subject-row">
+        <label>Email Subject</label>
+        <input type="text" name="subject" value="{{ template.subject if template else '' }}" placeholder="e.g. 🚀 Grow {{company}} with AI Email Marketing">
+      </div>
+
+      <label>Message Content</label>
+      <p class="hint">Variables: <code>{{name}}</code> = contact name, <code>{{company}}</code> = company name, <code>{{business_area}}</code> = industry</p>
+
+      <div class="tab-bar" id="tab-bar">
+        <div class="tab active" onclick="showTab('editor', this)">✏️ Editor</div>
+        <div class="tab" onclick="showTab('preview', this)">👁️ Preview</div>
+      </div>
+
+      <div id="pane-editor">
+        <textarea name="message_content" id="message_content" rows="18" required>{{ template.message_content if template else '' }}</textarea>
+      </div>
+      <div id="pane-preview" style="display:none;border:1px solid #eee;border-radius:8px;padding:20px;min-height:200px;background:#fafafa" id="preview-box"></div>
+
+      <button type="submit" class="btn btn-primary">{{ '💾 Save Changes' if template else '✅ Create Template' }}</button>
+      <a href="/" class="btn btn-secondary" style="text-decoration:none">Cancel</a>
+    </form>
+  </div>
+</div>
+
+<script>
+const starters = {
+  email: {
+    name: 'startup_promo_email',
+    subject: '🚀 Grow {{company}} with AI-Powered Email Marketing',
+    content: `<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f9f9f9; }
+  .header { background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+  .content { padding: 30px; background: white; }
+  .cta { background: #4F46E5; color: white; padding: 14px 30px; text-decoration: none; border-radius: 8px; display: inline-block; margin: 18px 0; font-weight: bold; }
+  .footer { background: #1a1a2e; color: #aaa; padding: 18px; text-align: center; font-size: 12px; border-radius: 0 0 10px 10px; }
+  ul { padding-left: 18px; }
+  li { margin-bottom: 8px; }
+</style>
+</head>
+<body>
+  <div class="header">
+    <h1>🚀 Grow {{company}}'s Reach</h1>
+    <p>AI-Powered Multi-Channel Marketing</p>
+  </div>
+  <div class="content">
+    <p>Hi <strong>{{name}}</strong>,</p>
+    <p>Are you a <strong>{{business_area}}</strong> startup struggling to reach investors, customers, and partners?</p>
+    <p>Our platform helps startups like <strong>{{company}}</strong>:</p>
+    <ul>
+      <li>✅ Send 1,000+ targeted emails daily</li>
+      <li>✅ Reach leads via WhatsApp & LinkedIn</li>
+      <li>✅ Track opens, clicks & conversions</li>
+      <li>✅ No coding needed</li>
+    </ul>
+    <a href="https://bizaxl.com" class="cta">🎁 Start Free 14-Day Trial</a>
+    <p>Best regards,<br><strong>Marketing Team</strong><br>BizAxl | markcom@bizaxl.com</p>
+  </div>
+  <div class="footer">
+    <p>© 2026 BizAxl | Tamil Nadu, India | <a href="{{unsubscribe_link}}" style="color:#888">Unsubscribe</a></p>
+  </div>
+</body>
+</html>`
+  },
+  whatsapp: {
+    name: 'whatsapp_outreach',
+    subject: '',
+    content: `Hi {{name}} 👋
+
+I'm from BizAxl — we help {{business_area}} startups like {{company}} grow faster with AI-powered email + WhatsApp marketing.
+
+✅ Send 1000+ targeted messages daily
+✅ Track opens & replies
+✅ All-in-one dashboard
+
+Interested in a FREE 14-day trial? 🚀
+
+Reply "YES" and I'll share the details!
+
+— BizAxl Marketing Team
+📧 markcom@bizaxl.com`
+  },
+  linkedin: {
+    name: 'linkedin_connection',
+    subject: '',
+    content: `Hi {{name}},
+
+I came across {{company}} and was impressed by your work in {{business_area}}.
+
+I'm with BizAxl — we help startups scale their outreach using AI-powered email, WhatsApp & LinkedIn campaigns.
+
+Would love to connect and share how we've helped similar startups grow 3x their leads in 30 days.
+
+Looking forward to connecting!
+
+Best,
+BizAxl Marketing Team`
+  }
+};
+
+function loadStarter(channel) {
+  const s = starters[channel];
+  document.getElementById('channel_select').value = channel;
+  document.querySelector('[name="name"]').value = s.name;
+  document.querySelector('[name="subject"]').value = s.subject;
+  document.getElementById('message_content').value = s.content;
+  onChannelChange();
+}
+
+function onChannelChange() {
+  const ch = document.getElementById('channel_select').value;
+  ['email','whatsapp','linkedin'].forEach(c => {
+    document.getElementById('hint-'+c).style.display = c === ch ? 'block' : 'none';
+  });
+  document.getElementById('subject-row').style.display = ch === 'email' ? 'block' : 'none';
+}
+
+function showTab(tab, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('pane-editor').style.display = tab === 'editor' ? 'block' : 'none';
+  const preview = document.getElementById('pane-preview');
+  preview.style.display = tab === 'preview' ? 'block' : 'none';
+  if (tab === 'preview') {
+    const content = document.getElementById('message_content').value
+      .replace(/\{\{name\}\}/g, 'Swetha')
+      .replace(/\{\{company\}\}/g, 'BizAxl')
+      .replace(/\{\{business_area\}\}/g, 'AI SaaS');
+    const ch = document.getElementById('channel_select').value;
+    preview.innerHTML = ch === 'email' ? content : `<pre style="white-space:pre-wrap;font-family:Arial;font-size:14px">${content}</pre>`;
+  }
+}
+
+// Init
+onChannelChange();
+</script>
+</body>
+</html>
