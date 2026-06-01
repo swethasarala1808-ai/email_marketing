@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BizAxl Outreach Dashboard</title>
+  <title>bizaxl Outreach Dashboard</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; color: #333; }
@@ -14,90 +14,85 @@
       display: flex; align-items: center; gap: 14px;
     }
     .navbar h1 { font-size: 20px; }
-    .navbar .logo { font-size: 28px; }
     .nav-pills { margin-left: auto; display: flex; gap: 8px; }
-    .nav-pill { padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; }
+    .nav-pill { padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; }
     .pill-email { background: #4F46E5; color: white; }
-    .pill-whatsapp { background: #25D366; color: white; }
-    .pill-linkedin { background: #0A66C2; color: white; }
+    .pill-wa    { background: #25D366; color: white; }
+    .pill-li    { background: #0A66C2; color: white; }
 
     .container { max-width: 1300px; margin: 24px auto; padding: 0 20px; }
 
-    .stats-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 24px; }
-    .stat-card { background: white; border-radius: 10px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+    .stats-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: 12px; margin-bottom: 24px; }
+    .stat-card  { background: white; border-radius: 10px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
     .stat-card .num { font-size: 28px; font-weight: 800; }
     .stat-card .lbl { color: #888; font-size: 11px; margin-top: 2px; }
-    .num-blue { color: #4F46E5; }
-    .num-green { color: #25D366; }
-    .num-linkedin { color: #0A66C2; }
-    .num-email { color: #7C3AED; }
-    .num-red { color: #e74c3c; }
+    .c-blue  { color:#4F46E5; } .c-green { color:#25D366; }
+    .c-li    { color:#0A66C2; } .c-red   { color:#e74c3c; }
+    .c-email { color:#7C3AED; }
 
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-    .card { background: white; border-radius: 12px; padding: 22px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); margin-bottom: 20px; }
-    .card h2 { font-size: 15px; font-weight: 700; margin-bottom: 16px; color: #444; display: flex; align-items: center; gap: 8px; }
-    .card h2::after { content: ''; flex: 1; height: 2px; background: linear-gradient(90deg, #4F46E5, transparent); margin-left: 8px; }
+    .grid-2 { display: grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px; }
+    .card { background:white; border-radius:12px; padding:22px; box-shadow:0 2px 8px rgba(0,0,0,0.07); margin-bottom:20px; }
+    .card h2 { font-size:15px; font-weight:700; margin-bottom:16px; color:#444; display:flex; align-items:center; gap:8px; }
+    .card h2::after { content:''; flex:1; height:2px; background:linear-gradient(90deg,#4F46E5,transparent); margin-left:8px; }
 
-    input, select, textarea { width: 100%; padding: 9px 12px; border: 1px solid #e0e0e0; border-radius: 7px; font-size: 13px; margin-bottom: 9px; transition: border 0.2s; }
-    input:focus, select:focus, textarea:focus { outline: none; border-color: #4F46E5; }
-    .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    input,select,textarea { width:100%; padding:9px 12px; border:1px solid #e0e0e0; border-radius:7px; font-size:13px; margin-bottom:9px; transition:border .2s; }
+    input:focus,select:focus,textarea:focus { outline:none; border-color:#4F46E5; }
+    .input-row { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
 
-    .btn { padding: 9px 18px; border: none; border-radius: 7px; cursor: pointer; font-size: 13px; font-weight: 700; transition: opacity 0.2s; }
-    .btn:hover { opacity: 0.88; }
-    .btn-primary { background: #4F46E5; color: white; }
-    .btn-whatsapp { background: #25D366; color: white; }
-    .btn-linkedin { background: #0A66C2; color: white; }
-    .btn-danger { background: #e74c3c; color: white; }
-    .btn-sm { padding: 5px 11px; font-size: 11px; }
-    .btn-outline { background: white; border: 2px solid #4F46E5; color: #4F46E5; }
+    .btn { padding:9px 18px; border:none; border-radius:7px; cursor:pointer; font-size:13px; font-weight:700; transition:opacity .2s; text-decoration:none; display:inline-block; }
+    .btn:hover { opacity:.85; }
+    .btn-primary  { background:#4F46E5; color:white; }
+    .btn-wa       { background:#25D366; color:white; }
+    .btn-li       { background:#0A66C2; color:white; }
+    .btn-danger   { background:#e74c3c; color:white; }
+    .btn-warn     { background:#f59e0b; color:white; }
+    .btn-outline  { background:white; border:2px solid #4F46E5; color:#4F46E5; }
+    .btn-sm { padding:5px 11px; font-size:11px; }
 
-    table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    th { background: #f8f9ff; padding: 9px 12px; text-align: left; font-weight: 700; color: #555; border-bottom: 2px solid #eee; }
-    td { padding: 9px 12px; border-bottom: 1px solid #f5f5f5; vertical-align: middle; }
-    tr:hover td { background: #fafbff; }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th { background:#f8f9ff; padding:9px 12px; text-align:left; font-weight:700; color:#555; border-bottom:2px solid #eee; }
+    td { padding:9px 12px; border-bottom:1px solid #f5f5f5; vertical-align:middle; }
+    tr:hover td { background:#fafbff; }
 
-    .badge { padding: 3px 9px; border-radius: 12px; font-size: 11px; font-weight: 700; }
-    .badge-email { background: #ede9fe; color: #4F46E5; }
-    .badge-whatsapp { background: #dcfce7; color: #15803d; }
-    .badge-linkedin { background: #dbeafe; color: #1d4ed8; }
-    .badge-success { background: #d4edda; color: #155724; }
-    .badge-failed { background: #f8d7da; color: #721c24; }
+    .badge { padding:3px 9px; border-radius:12px; font-size:11px; font-weight:700; }
+    .badge-email    { background:#ede9fe; color:#4F46E5; }
+    .badge-whatsapp { background:#dcfce7; color:#15803d; }
+    .badge-linkedin { background:#dbeafe; color:#1d4ed8; }
+    .badge-success  { background:#d4edda; color:#155724; }
+    .badge-failed   { background:#f8d7da; color:#721c24; }
 
-    .alert { padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; font-size: 14px; }
-    .alert-success { background: #d4edda; color: #155724; border-left: 4px solid #28a745; }
-    .alert-error { background: #f8d7da; color: #721c24; border-left: 4px solid #dc3545; }
-    .alert-warning { background: #fff3cd; color: #856404; border-left: 4px solid #ffc107; }
+    .alert { padding:12px 16px; border-radius:8px; margin-bottom:16px; font-size:14px; }
+    .alert-success { background:#d4edda; color:#155724; border-left:4px solid #28a745; }
+    .alert-error   { background:#f8d7da; color:#721c24; border-left:4px solid #dc3545; }
 
-    .channel-section { border-left: 4px solid #ccc; padding-left: 14px; margin-bottom: 12px; }
-    .channel-email { border-color: #4F46E5; }
-    .channel-whatsapp { border-color: #25D366; }
-    .channel-linkedin { border-color: #0A66C2; }
+    .ch-section { border-left:4px solid #ccc; padding-left:14px; margin-bottom:8px; }
+    .ch-email { border-color:#4F46E5; }
+    .ch-wa    { border-color:#25D366; }
+    .ch-li    { border-color:#0A66C2; }
 
-    .send-row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
-    .send-row input { margin-bottom: 0; }
-    .empty { text-align: center; color: #bbb; padding: 24px; font-size: 14px; }
+    .send-row { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+    .send-row input { margin-bottom:0; }
+    .empty { text-align:center; color:#bbb; padding:24px; font-size:14px; }
 
-    .tabs { display: flex; gap: 0; margin-bottom: 0; border-bottom: 2px solid #eee; }
-    .tab { padding: 10px 20px; cursor: pointer; font-weight: 600; color: #888; font-size: 13px; border-bottom: 3px solid transparent; margin-bottom: -2px; }
-    .tab.active { color: #4F46E5; border-bottom-color: #4F46E5; }
-    .tab-panel { display: none; padding-top: 16px; }
-    .tab-panel.active { display: block; }
+    /* How-it-works info box */
+    .info-box { background:#f0f9ff; border:1px solid #bae6fd; border-radius:8px; padding:12px 14px; font-size:12px; color:#0369a1; margin-top:8px; line-height:1.6; }
+    .info-box strong { color:#0c4a6e; }
 
-    @media(max-width: 900px) {
-      .stats-grid { grid-template-columns: repeat(3, 1fr); }
-      .grid-2 { grid-template-columns: 1fr; }
+    @media(max-width:900px){
+      .stats-grid { grid-template-columns:repeat(3,1fr); }
+      .grid-2     { grid-template-columns:1fr; }
     }
   </style>
 </head>
 <body>
 
 <div class="navbar">
-  <span class="logo">🚀</span>
-  <h1>BizAxl Multi-Channel Outreach</h1>
+  <span style="font-size:26px">🚀</span>
+  <h1>bizaxl Multi-Channel Outreach</h1>
   <div class="nav-pills">
     <span class="nav-pill pill-email">📧 Email</span>
-    <span class="nav-pill pill-whatsapp">📱 WhatsApp</span>
-    <span class="nav-pill pill-linkedin">💼 LinkedIn</span>
+    <span class="nav-pill pill-wa">📱 WhatsApp</span>
+    <span class="nav-pill pill-li">💼 LinkedIn</span>
   </div>
 </div>
 
@@ -105,18 +100,18 @@
 
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% for cat, msg in messages %}
-      <div class="alert alert-{{ cat }}">{{ msg }}</div>
+      <div class="alert alert-{{ 'success' if cat == 'success' else 'error' }}">{{ msg }}</div>
     {% endfor %}
   {% endwith %}
 
   <!-- Stats -->
   <div class="stats-grid">
-    <div class="stat-card"><div class="num num-blue">{{ stats.total_contacts }}</div><div class="lbl">Total Contacts</div></div>
-    <div class="stat-card"><div class="num num-email">{{ stats.email_sent }}</div><div class="lbl">📧 Emails Sent</div></div>
-    <div class="stat-card"><div class="num num-green">{{ stats.whatsapp_sent }}</div><div class="lbl">📱 WhatsApp Sent</div></div>
-    <div class="stat-card"><div class="num num-linkedin">{{ stats.linkedin_sent }}</div><div class="lbl">💼 LinkedIn Sent</div></div>
-    <div class="stat-card"><div class="num num-blue">{{ stats.total_sent }}</div><div class="lbl">Total Sent ✅</div></div>
-    <div class="stat-card"><div class="num num-red">{{ stats.total_failed }}</div><div class="lbl">Failed ❌</div></div>
+    <div class="stat-card"><div class="num c-blue">{{ stats.total_contacts }}</div><div class="lbl">Total Contacts</div></div>
+    <div class="stat-card"><div class="num c-email">{{ stats.email_sent }}</div><div class="lbl">📧 Emails Sent</div></div>
+    <div class="stat-card"><div class="num c-green">{{ stats.whatsapp_sent }}</div><div class="lbl">📱 WhatsApp</div></div>
+    <div class="stat-card"><div class="num c-li">{{ stats.linkedin_sent }}</div><div class="lbl">💼 LinkedIn</div></div>
+    <div class="stat-card"><div class="num c-blue">{{ stats.total_sent }}</div><div class="lbl">Total Sent ✅</div></div>
+    <div class="stat-card"><div class="num c-red">{{ stats.total_failed }}</div><div class="lbl">Failed ❌</div></div>
   </div>
 
   <div class="grid-2">
@@ -129,10 +124,10 @@
           <input type="text" name="company_name" placeholder="Company Name">
         </div>
         <input type="email" name="email" placeholder="📧 Email address">
-        <input type="tel" name="phone" placeholder="📱 Phone for WhatsApp (e.g. 919876543210)">
-        <input type="url" name="linkedin_url" placeholder="💼 LinkedIn Profile URL">
+        <input type="tel"   name="phone" placeholder="📱 WhatsApp number (e.g. 919876543210)">
+        <input type="url"   name="linkedin_url" placeholder="💼 LinkedIn Profile URL">
         <div class="input-row">
-          <input type="text" name="business_area" placeholder="Business Area (e.g. AI SaaS)">
+          <input type="text" name="business_area" placeholder="Business Area (e.g. Medical Shop)">
           <button type="submit" class="btn btn-primary" style="margin-bottom:9px">Add Contact</button>
         </div>
       </form>
@@ -142,17 +137,15 @@
     <div class="card">
       <h2>📂 Import Contacts (CSV)</h2>
       <p style="font-size:12px;color:#888;margin-bottom:12px">
-        CSV columns: <code>name, email, phone, linkedin_url, company_name, business_area</code>
+        Columns: <code>name, email, phone, linkedin_url, company_name, business_area</code>
       </p>
       <form action="/bulk_import" method="POST" enctype="multipart/form-data">
         <input type="file" name="csv_file" accept=".csv" required>
         <button type="submit" class="btn btn-primary">Import All</button>
       </form>
-      <div style="margin-top:16px;padding:12px;background:#f8f9ff;border-radius:8px;font-size:12px;color:#555">
-        <strong>📱 WhatsApp number format:</strong> Country code + number<br>
-        Example: <code>919876543210</code> (India +91)<br>
-        <strong>💼 LinkedIn URL format:</strong><br>
-        <code>https://linkedin.com/in/username</code>
+      <div style="margin-top:14px;padding:12px;background:#f8f9ff;border-radius:8px;font-size:12px;color:#555;line-height:1.7">
+        <strong>📱 WhatsApp format:</strong> 91XXXXXXXXXX (India +91)<br>
+        <strong>💼 LinkedIn URL:</strong> https://linkedin.com/in/username
       </div>
     </div>
   </div>
@@ -160,61 +153,83 @@
   <!-- Templates & Campaigns -->
   <div class="card">
     <h2>📝 Message Templates & Send Campaigns</h2>
-    <a href="/create_template" class="btn btn-primary" style="margin-bottom:16px;display:inline-block">+ Create New Template</a>
+    <a href="/create_template" class="btn btn-primary" style="margin-bottom:18px;display:inline-block">+ Create New Template</a>
 
     {% if templates %}
     <table>
-      <tr><th>Template Name</th><th>Channel</th><th>Created</th><th style="min-width:420px">Send Campaign</th></tr>
+      <tr>
+        <th>Template Name</th>
+        <th>Channel</th>
+        <th>Created</th>
+        <th style="min-width:380px">Send Campaign</th>
+      </tr>
       {% for t in templates %}
       <tr>
         <td><strong>{{ t.name }}</strong></td>
         <td>
-          {% if t.channel == 'whatsapp' %}
-            <span class="badge badge-whatsapp">📱 WhatsApp</span>
-          {% elif t.channel == 'linkedin' %}
-            <span class="badge badge-linkedin">💼 LinkedIn</span>
-          {% else %}
-            <span class="badge badge-email">📧 Email</span>
-          {% endif %}
+          {% if t.channel == 'whatsapp' %}<span class="badge badge-whatsapp">📱 WhatsApp</span>
+          {% elif t.channel == 'linkedin' %}<span class="badge badge-linkedin">💼 LinkedIn</span>
+          {% else %}<span class="badge badge-email">📧 Email</span>{% endif %}
         </td>
         <td>{{ t.created_date.strftime('%d %b %Y') }}</td>
         <td>
+          <!-- ── EMAIL ── -->
           {% if t.channel == 'email' %}
-          <div class="channel-section channel-email">
+          <div class="ch-section ch-email">
+            <div class="send-row" style="margin-bottom:6px">
+              <form action="/send_test/{{ t.id }}" method="POST" class="send-row" style="flex:1">
+                <input type="email" name="test_email" placeholder="test@email.com" style="width:180px">
+                <button class="btn btn-sm btn-primary">Send Test</button>
+              </form>
+            </div>
             <form action="/send_email_campaign/{{ t.id }}" method="POST" class="send-row">
               <input type="number" name="limit" value="100" min="1" max="1000" style="width:70px">
               <button class="btn btn-sm btn-primary">📧 Send Emails</button>
             </form>
           </div>
 
+          <!-- ── WHATSAPP ── -->
           {% elif t.channel == 'whatsapp' %}
-          <div class="channel-section channel-whatsapp">
+          <div class="ch-section ch-wa">
             <div class="send-row" style="margin-bottom:6px">
               <form action="/test_whatsapp/{{ t.id }}" method="POST" class="send-row" style="flex:1">
-                <input type="tel" name="test_phone" placeholder="Test phone (e.g. 919876543210)" style="width:200px">
-                <button class="btn btn-sm btn-whatsapp">Test Send</button>
+                <input type="tel" name="test_phone" placeholder="91XXXXXXXXXX" style="width:160px">
+                <button class="btn btn-sm btn-wa">📱 Open Chat</button>
               </form>
             </div>
             <form action="/send_whatsapp_campaign/{{ t.id }}" method="POST" class="send-row">
-              <input type="number" name="limit" value="50" min="1" max="200" style="width:70px">
-              <button class="btn btn-sm btn-whatsapp">📱 Send to All</button>
+              <input type="number" name="limit" value="10" min="1" max="100" style="width:60px">
+              <button class="btn btn-sm btn-wa">Send to All</button>
             </form>
+            <div class="info-box">
+              <strong>How it works:</strong> Clicking "Open Chat" opens WhatsApp Web in your browser with the message already typed. Just press <strong>Send</strong> in WhatsApp. ✅
+            </div>
           </div>
 
+          <!-- ── LINKEDIN ── -->
           {% elif t.channel == 'linkedin' %}
-          <div class="channel-section channel-linkedin">
+          <div class="ch-section ch-li">
             <form action="/send_linkedin_campaign/{{ t.id }}" method="POST" class="send-row">
-              <input type="number" name="limit" value="20" min="1" max="50" style="width:70px">
-              <button class="btn btn-sm btn-linkedin">💼 Send to All</button>
+              <input type="number" name="limit" value="10" min="1" max="30" style="width:60px">
+              <button class="btn btn-sm btn-li">💼 Open Profiles</button>
             </form>
-            <p style="font-size:11px;color:#888;margin-top:4px">⚠️ Max 20-30/day recommended</p>
+            <div class="info-box">
+              <strong>How it works:</strong> Each LinkedIn profile opens in your browser. Copy the message below and paste it manually. Max <strong>20–30/day</strong> recommended.
+            </div>
+            <!-- Copy message button -->
+            <div style="margin-top:8px">
+              <button onclick="copyMsg('{{ t.message_content|replace("'","\\'")|replace('\n','\\n') }}')"
+                      class="btn btn-sm btn-outline">📋 Copy Message Text</button>
+            </div>
           </div>
           {% endif %}
 
-          <form action="/delete_template/{{ t.id }}" method="POST" onsubmit="return confirm('Delete?')" style="display:inline">
-            <button class="btn btn-sm btn-danger" style="margin-top:4px">Delete</button>
-          </form>
-          <a href="/edit_template/{{ t.id }}" class="btn btn-sm btn-outline" style="margin-top:4px;text-decoration:none">Edit</a>
+          <div style="display:flex;gap:6px;margin-top:6px">
+            <a href="/edit_template/{{ t.id }}" class="btn btn-sm btn-warn">✏️ Edit</a>
+            <form action="/delete_template/{{ t.id }}" method="POST" onsubmit="return confirm('Delete?')">
+              <button class="btn btn-sm btn-danger">🗑 Delete</button>
+            </form>
+          </div>
         </td>
       </tr>
       {% endfor %}
@@ -224,13 +239,13 @@
     {% endif %}
   </div>
 
-  <!-- Contacts Table -->
+  <!-- Contacts -->
   <div class="card">
     <h2>👥 Contacts ({{ stats.total_contacts }})</h2>
     {% if contacts %}
     <div style="overflow-x:auto">
     <table>
-      <tr><th>#</th><th>Name</th><th>Company</th><th>📧 Email</th><th>📱 WhatsApp</th><th>💼 LinkedIn</th><th>Area</th><th></th></tr>
+      <tr><th>#</th><th>Name</th><th>Company</th><th>📧 Email</th><th>📱 Phone</th><th>💼 LinkedIn</th><th>Area</th><th></th></tr>
       {% for c in contacts %}
       <tr>
         <td>{{ loop.index }}</td>
@@ -238,7 +253,7 @@
         <td>{{ c.company_name or '—' }}</td>
         <td style="font-size:12px">{{ c.email or '—' }}</td>
         <td style="font-size:12px">{{ c.phone or '—' }}</td>
-        <td style="font-size:11px;max-width:150px;overflow:hidden;text-overflow:ellipsis">
+        <td style="font-size:11px">
           {% if c.linkedin_url %}<a href="{{ c.linkedin_url }}" target="_blank">🔗 View</a>{% else %}—{% endif %}
         </td>
         <td>{{ c.business_area or '—' }}</td>
@@ -252,11 +267,11 @@
     </table>
     </div>
     {% else %}
-    <div class="empty">No contacts yet. Add manually or import a CSV file.</div>
+    <div class="empty">No contacts yet. Add manually or import a CSV.</div>
     {% endif %}
   </div>
 
-  <!-- Activity Logs -->
+  <!-- Logs -->
   <div class="card">
     <h2>📊 Recent Campaign Activity</h2>
     {% if logs %}
@@ -282,5 +297,16 @@
   </div>
 
 </div>
+
+<script>
+function copyMsg(text) {
+  const clean = text.replace(/\\n/g, '\n');
+  navigator.clipboard.writeText(clean).then(() => {
+    alert('✅ Message copied! Paste it in LinkedIn.');
+  }).catch(() => {
+    prompt('Copy this message:', clean);
+  });
+}
+</script>
 </body>
 </html>

@@ -148,6 +148,21 @@ def delete_template(tid):
 
 # ─── Routes: Send Campaigns ───────────────────────────────────────────────────
 
+@app.route('/send_test/<int:tid>', methods=['POST'])
+def send_test(tid):
+    from channels.email_sender import send_email
+    template = MessageTemplate.query.get_or_404(tid)
+    test_email = request.form.get('test_email', '').strip()
+    if not test_email:
+        flash('Enter a test email address!', 'error')
+        return redirect(url_for('dashboard'))
+    ok = send_email(test_email, 'Test', 'Test Co', template.subject, template.message_content)
+    if ok:
+        flash(f'✅ Test email sent to {test_email}!', 'success')
+    else:
+        flash('❌ Email failed — check your .env SMTP settings (use port 465)', 'error')
+    return redirect(url_for('dashboard'))
+
 @app.route('/send_email_campaign/<int:tid>', methods=['POST'])
 def send_email_campaign(tid):
     from channels.email_sender import send_bulk_email
